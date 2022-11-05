@@ -55,7 +55,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 controller: _titleController,
                 onSubmitted: (_) => _submitForm(),
                 decoration: InputDecoration(
-                  labelText: 'Títle',
+                  labelText: 'Título',
                 ),
               ),
               TextField(
@@ -63,32 +63,29 @@ class _TransactionFormState extends State<TransactionForm> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 onSubmitted: (_) => _submitForm(),
                 decoration: InputDecoration(
-                  labelText: 'Value (R\$)',
+                  labelText: 'Valor (R\$)',
                 ),
               ),
-              Container(
-                height: 709,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _selectedDate == null
-                            ? 'Nenhuma data selecionada!'
-                            : 'Data selecionada ${DateFormat('dd/MM/y').format(_selectedDate)}',
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? 'Nenhuma data selecionada!'
+                          : 'Data selecionada ${DateFormat('dd/MM/y').format(_selectedDate)}',
+                    ),
+                  ),
+                  ElevatedButton(
+                    child: Text(
+                      'Selecionar Data',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    ElevatedButton(
-                      child: Text(
-                        'Selecionar Data',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: _showDatePicker,
-                    ),
-                  ],
-                ),
+                    onPressed: _showDatePicker,
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
