@@ -5,6 +5,7 @@ import 'models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'components/chart.dart';
+import 'dart:ui';
 
 main() => runApp(ExpensesApp());
 
@@ -95,13 +96,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLandScape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandScape = mediaQuery.orientation == Orientation.landscape;
     final appBar = AppBar(
       title: Text(
         'Despesas Pessoais',
       ),
       actions: <Widget>[
+        if (isLandScape)
+          IconButton(
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+          ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
@@ -109,9 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    final availableHeight = MediaQuery.of(context).size.height -
+    final availableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
 
     return Scaffold(
       appBar: appBar,
@@ -119,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (isLandScape)
+            /*if (isLandScape)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -133,15 +143,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                 ],
-              ),
+              ),*/
             if (_showChart || !isLandScape)
               Container(
-                height: availableHeight * (isLandScape ? 0.70 : 0.30),
+                height: availableHeight * (isLandScape ? 0.8 : 0.30),
                 child: Chart(_recentTransactions),
               ),
             if (!_showChart || !isLandScape)
               Container(
-                height: availableHeight * 0.70,
+                height: availableHeight * (isLandScape ? 1 : 0.7),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
           ],
