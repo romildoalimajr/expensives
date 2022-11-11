@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
 
-class transactionItem extends StatefulWidget {
-  const transactionItem({
+class TransactionItem extends StatefulWidget {
+  const TransactionItem({
     Key? key,
     required this.tr,
     required this.onRemove,
@@ -16,10 +16,10 @@ class transactionItem extends StatefulWidget {
   final void Function(String p1) onRemove;
 
   @override
-  State<transactionItem> createState() => _transactionItemState();
+  State<TransactionItem> createState() => _TransactionItemState();
 }
 
-class _transactionItemState extends State<transactionItem> {
+class _TransactionItemState extends State<TransactionItem> {
   static const colors = [
     Colors.red,
     Colors.purple,

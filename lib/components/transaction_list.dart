@@ -15,7 +15,7 @@ class TransactionList extends StatelessWidget {
             builder: (ctx, constraints) {
               return Column(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -40,7 +40,8 @@ class TransactionList extends StatelessWidget {
             itemCount: transactions.length,
             itemBuilder: (ctx, index) {
               final tr = transactions[index];
-              return transactionItem(
+              return TransactionItem(
+                key: GlobalObjectKey(tr),
                 tr: tr,
                 onRemove: onRemove,
               );
