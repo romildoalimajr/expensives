@@ -1,14 +1,18 @@
+import 'package:expensives/components/adaptative_button.dart';
+import 'package:expensives/components/adaptative_date_picker.dart';
+import 'package:expensives/components/adaptative_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:ui';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
 
-  TransactionForm(this.onSubmit);
+  const TransactionForm(this.onSubmit, {Key? key}) : super(key: key);
 
   @override
-  State<TransactionForm> createState() => _TransactionFormState();
+  State<TransactionForm> createState() {
+    return _TransactionFormState();
+  }
 }
 
 class _TransactionFormState extends State<TransactionForm> {
@@ -26,23 +30,6 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.onSubmit(title, value, _selectedDate);
   }
 
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -58,53 +45,32 @@ class _TransactionFormState extends State<TransactionForm> {
             ),
             child: Column(
               children: [
-                TextField(
+                AdaptativeTextField(
+                  label: 'Título',
                   controller: _titleController,
-                  onSubmitted: (_) => _submitForm(),
-                  decoration: InputDecoration(
-                    labelText: 'Título',
-                  ),
+                  onSubmitted: (_) => _submitForm,
                 ),
-                TextField(
+                AdaptativeTextField(
+                  label: 'Valor (R\$)',
                   controller: _valueController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  onSubmitted: (_) => _submitForm(),
-                  decoration: InputDecoration(
-                    labelText: 'Valor (R\$)',
-                  ),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  onSubmitted: (_) => _submitForm,
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _selectedDate == null
-                            ? 'Nenhuma data selecionada!'
-                            : 'Data selecionada ${DateFormat('dd/MM/y').format(_selectedDate)}',
-                      ),
-                    ),
-                    ElevatedButton(
-                      child: Text(
-                        'Selecionar Data',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: _showDatePicker,
-                    ),
-                  ],
+                AdaptativeDatePicker(
+                  selectedDate: _selectedDate,
+                  onDateChanged: (newDate) {
+                    setState(() {
+                      _selectedDate = newDate;
+                    });
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      child: Text(
-                        'New Transaction',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: _submitForm,
+                  children: <Widget>[
+                    AdaptativeButton(
+                      'Nova Transação',
+                      _submitForm,
                     ),
                   ],
                 ),
